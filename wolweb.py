@@ -1,4 +1,6 @@
-"""Wake on Lan Webserver written in Python3"""
+"""Wake on Lan Webserver written in Python3
+
+API Follow's google's API design guide: https://cloud.google.com/apis/design"""
 import os
 import platform
 import json
@@ -30,8 +32,8 @@ def index():
     resp.headers['Content-Type'] = "text/html; charset=UTF-8"
     return resp
 
-@app.route("/device/<name>", methods = ['GET', 'POST', 'DELETE'])
-def update(name):
+@app.route("/device/<name>", methods = ['GET', 'PUT', 'DELETE'])
+def update_device(name):
     """Do magic with the settings file"""
     if flask.request.method == 'GET':
         with open(SETTINGS_FILE, 'r', encoding='utf-8') as file:
@@ -39,7 +41,7 @@ def update(name):
         resp = flask.Response(json.dumps(config['devices'][name]))
         resp.headers['Content-Type'] = "text/plain; charset=UTF-8"
         return resp
-    if flask.request.method == 'POST':
+    if flask.request.method == 'PUT':
         with open(SETTINGS_FILE, 'r', encoding='utf-8') as infile:
             config = json.load(infile)
         config['devices'][name] = {"ip": flask.request.form['ip'], "mac": flask.request.form['mac']}
@@ -55,6 +57,28 @@ def update(name):
         with open(SETTINGS_FILE, 'w', encoding='utf-8') as outfile:
             json.dump(config, outfile, indent=2)
         resp = flask.Response(json.dumps(obj))
+        resp.headers['Content-Type'] = "text/plain; charset=UTF-8"
+        return resp
+    resp = flask.Response("You shouldn't be here")
+    resp.headers['Content-Type'] = "text/plain; charset=UTF-8"
+    return resp
+
+@app.route("/device", methods = ['GET', 'POST'])
+def update():
+    """Do magic with the settings file"""
+    if flask.request.method == 'GET':
+        with open(SETTINGS_FILE, 'r', encoding='utf-8') as file:
+            config = json.load(file)
+        resp = flask.Response(json.dumps(config['devices']))
+        resp.headers['Content-Type'] = "text/plain; charset=UTF-8"
+        return resp
+    if flask.request.method == 'POST':
+        with open(SETTINGS_FILE, 'r', encoding='utf-8') as infile:
+            config = json.load(infile)
+        config['devices'][flask.request.form['name']] = {"ip": flask.request.form['ip'], "mac": flask.request.form['mac']}
+        with open(SETTINGS_FILE, 'w', encoding='utf-8') as outfile:
+            json.dump(config, outfile, indent=2)
+        resp = flask.Response(json.dumps(config))
         resp.headers['Content-Type'] = "text/plain; charset=UTF-8"
         return resp
     resp = flask.Response("You shouldn't be here")
