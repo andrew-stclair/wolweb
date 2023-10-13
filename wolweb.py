@@ -36,9 +36,9 @@ def update(name):
     if flask.request.method == 'GET':
         with open(SETTINGS_FILE, 'r', encoding='utf-8') as file:
             config = json.load(file)
-            resp = flask.Response(json.dumps(config['devices'][name]))
-            resp.headers['Content-Type'] = "text/plain; charset=UTF-8"
-            return resp
+        resp = flask.Response(json.dumps(config['devices'][name]))
+        resp.headers['Content-Type'] = "text/plain; charset=UTF-8"
+        return resp
     elif flask.request.method == 'POST':
         with open(SETTINGS_FILE, 'r', encoding='utf-8') as infile:
             config = json.load(infile)
