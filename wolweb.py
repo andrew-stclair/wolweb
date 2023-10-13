@@ -1,3 +1,4 @@
+"""Wake on Lan Webserver written in Python3"""
 import os
 import platform
 import json
