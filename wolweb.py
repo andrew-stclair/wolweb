@@ -39,7 +39,7 @@ def update(name):
         resp = flask.Response(json.dumps(config['devices'][name]))
         resp.headers['Content-Type'] = "text/plain; charset=UTF-8"
         return resp
-    elif flask.request.method == 'POST':
+    if flask.request.method == 'POST':
         with open(SETTINGS_FILE, 'r', encoding='utf-8') as infile:
             config = json.load(infile)
         config['devices'][name] = {"ip": flask.request.form['ip'], "mac": flask.request.form['mac']}
@@ -48,7 +48,7 @@ def update(name):
         resp = flask.Response(json.dumps(config))
         resp.headers['Content-Type'] = "text/plain; charset=UTF-8"
         return resp
-    elif flask.request.method == 'DELETE':
+    if flask.request.method == 'DELETE':
         with open(SETTINGS_FILE, 'r', encoding='utf-8') as infile:
             config = json.load(infile)
         obj = config['devices'].pop(name, None)
@@ -57,6 +57,9 @@ def update(name):
         resp = flask.Response(json.dumps(obj))
         resp.headers['Content-Type'] = "text/plain; charset=UTF-8"
         return resp
+    resp = flask.Response("¯\_(ツ)_/¯")
+    resp.headers['Content-Type'] = "text/plain; charset=UTF-8"
+    return resp
 
 @app.route(f"/{SETTINGS_FILE}", methods = ['GET'])
 def settings():
