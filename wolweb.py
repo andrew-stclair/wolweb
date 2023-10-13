@@ -21,14 +21,14 @@ if not os.path.exists(SETTINGS_FILE):
 @app.route("/", methods = ['GET'])
 def index():
     """Webserver index"""
-    result = ""
+    result = "<html><head><title>Wake on Lan</title></head>"
     with open(SETTINGS_FILE, 'r', encoding='utf-8') as file:
         config = json.load(file)
-        result += "<center><table style='padding:10px;'>"
+        result += "<body><center><table style='padding:10px;'>"
         for device in config['devices'].keys():
             result += f"<tr style='padding:10px;'><td rowspan='2' style='padding:10px;'>{device}</td><td style='text-align: right;'>IP:</td><td>{config['devices'][device]['ip']}</td></tr><tr><td style='text-align: right;'>MAC:</td><td>{config['devices'][device]['mac']}</td></tr>"
-        result += "</table></center>"
-    result += f"<footer style='position:absolute;width:100%;bottom:10px;color:#BBB;'><center>Host: {platform.node()}</center></footer>"
+        result += "</table></center></body>"
+    result += f"<footer style='position:absolute;width:100%;bottom:10px;color:#BBB;'><center>Host: {platform.node()}</center></footer></html>"
     resp = flask.Response(result)
     resp.headers['Content-Type'] = "text/html; charset=UTF-8"
     return resp
