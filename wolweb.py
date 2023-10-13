@@ -5,6 +5,7 @@ import os
 import platform
 import json
 import flask
+from wakeonlan import send_magic_packet
 
 SETTINGS_FILE = "settings.json"
 app = flask.Flask(__name__)
@@ -79,6 +80,20 @@ def update():
         with open(SETTINGS_FILE, 'w', encoding='utf-8') as outfile:
             json.dump(config, outfile, indent=2)
         resp = flask.Response(json.dumps(config))
+        resp.headers['Content-Type'] = "text/plain; charset=UTF-8"
+        return resp
+    resp = flask.Response("You shouldn't be here")
+    resp.headers['Content-Type'] = "text/plain; charset=UTF-8"
+    return resp
+
+@app.route("/wake/<name>", methods = ['GET'])
+def wake(name):
+    """Do magic with the settings file"""
+    if flask.request.method == 'GET':
+        with open(SETTINGS_FILE, 'r', encoding='utf-8') as file:
+            config = json.load(file)
+        send_magic_packet(config['devices'][name]['mac'], ip_address=config['devices'][name]['ip'])
+        resp = flask.Response('Done')
         resp.headers['Content-Type'] = "text/plain; charset=UTF-8"
         return resp
     resp = flask.Response("You shouldn't be here")
