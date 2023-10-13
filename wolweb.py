@@ -57,7 +57,7 @@ def update(name):
         resp = flask.Response(json.dumps(obj))
         resp.headers['Content-Type'] = "text/plain; charset=UTF-8"
         return resp
-    resp = flask.Response("¯\_(ツ)_/¯")
+    resp = flask.Response("You shouldn't be here")
     resp.headers['Content-Type'] = "text/plain; charset=UTF-8"
     return resp
 
