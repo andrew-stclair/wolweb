@@ -1,4 +1,4 @@
-FROM python:3.12-alpine
+FROM python:3.11-alpine
 WORKDIR /wolweb
 COPY wolweb.py /wolweb/wolweb.py
 COPY requirements.txt /wolweb/requirements.txt
