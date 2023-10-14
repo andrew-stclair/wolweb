@@ -6,6 +6,7 @@ COPY requirements.txt /wolweb/requirements.txt
 RUN apk update \
  && apk add \
     curl \
+    gcc \
  && pip3 install -r /wolweb/requirements.txt \
  && mkdir -p /wolweb/config
 
