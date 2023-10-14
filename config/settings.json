@@ -1,0 +1,8 @@
+{
+  "devices": {
+    "localhost": {
+      "ip": "127.0.0.1",
+      "mac": "ff:ff:ff:ff:ff:ff"
+    }
+  }
+}

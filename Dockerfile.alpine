@@ -1,0 +1,17 @@
+FROM python:3.12-alpine
+WORKDIR /wolweb
+COPY wolweb.py /wolweb/wolweb.py
+COPY requirements.txt /wolweb/requirements.txt
+
+RUN apk update \
+ && apk add \
+    curl \
+ && pip3 install -r /wolweb/requirements.txt \
+ && mkdir -p /wolweb/config
+
+CMD ["uwsgi", "--http", "0.0.0.0:5000", "--master", "-p", "4", "-w", "wolweb:app"]
+
+EXPOSE 5000/tcp
+VOLUME [ "/wolweb/config" ]
+HEALTHCHECK --interval=5s --timeout=3s \
+  CMD curl --silent --show-error --fail http://localhost:5000 || exit 1

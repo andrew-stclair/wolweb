@@ -42,7 +42,7 @@ jobs:
             ghcr.io/${{ github.repository }}:alpine
           pull: false
           context: .
-          file: Dockerfile
+          file: Dockerfile.alpine
 
   build-debian:
     permissions: write-all
@@ -74,4 +74,4 @@ jobs:
             ghcr.io/${{ github.repository }}:debian
           pull: false
           context: .
-          file: Debian_Dockerfile
+          file: Dockerfile.debian
