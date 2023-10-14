@@ -8,6 +8,7 @@ RUN apk update \
     curl \
     gcc \
     libc-dev \
+    musl-dev \
  && pip3 install -r /wolweb/requirements.txt \
  && mkdir -p /wolweb/config
 
